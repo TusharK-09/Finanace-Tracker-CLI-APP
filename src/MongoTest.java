@@ -2,14 +2,19 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
 
 public class MongoTest {
     private static final String DATABASE_NAME = "FINANCE-JAVA-APP";
     private static final String COLLECTION_NAME = "java";
 
+
+    private static final Dotenv dotenv = Dotenv.load();
+
     public static MongoCollection<Document> getCollection() {
-        MongoClient mongoClient = MongoClients.create("mongodb+srv://tushar-1:NsV6C6B%40.P%21LMzg@tusharcluster.hh1ta.mongodb.net/");
+        String uri = dotenv.get("MONGO_URL");
+        MongoClient mongoClient = MongoClients.create(uri);
         MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
         return database.getCollection(COLLECTION_NAME);
     }
